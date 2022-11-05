@@ -51,9 +51,7 @@ exports.login = (email, password) => {
                         reject('password is incorrect')
                     }else {
                         mongoose.disconnect()
-                        resolve({
-                            id: user._id
-                        })
+                        resolve(user);
                     }
                 }).catch(err => {
                     mongoose.disconnect();

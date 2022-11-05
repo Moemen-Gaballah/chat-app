@@ -16,9 +16,16 @@ exports.getProfile = (req, res, next) => {
             res.render("profile", {
                 pageTitle: data.username,
                 isUser: true,
+                myId: req.session.userId,
+                myName: req.session.name,
+                myImage: req.session.image,
+                friendId: data._id,
                 username: data.username,
                 userImage: data.image,
-                isOwner: id === req.session.userId
+                isOwner: id === String(req.session.userId),
+                isFriends: data.friends.find(friend => friend.id === req.session.userId),
+                isRequestSent: data.friendRequests.find(friend => friend.id === req.session.userId),
+                isRequestRecieved: data.sendRequests.find(friend => friend.id === req.session.userId),
             });
         }).catch(err => {
             res.redirect("/error");

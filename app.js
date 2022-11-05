@@ -4,15 +4,18 @@ const path = require('path');
 const session = require('express-session')
 
 const SessionStore = require("connect-mongodb-session")(session);
+const flash = require('connect-flash')
 
 const authRouter = require('./routes/auth.route')
 const profileRouter = require('./routes/profile.route')
+const friendRouter = require('./routes/friend.route')
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'public','assets')));
 app.use(express.static(path.join(__dirname, 'public','images')));
 app.use(flash())
+
 const STORE = new SessionStore({
     uri: 'mongodb://localhost:27017/chat-app',
     connection: 'sessions'
@@ -31,6 +34,7 @@ app.set('views', 'views') // default
 
 app.use("/", authRouter);
 app.use("/profile", profileRouter)
+app.use("/friend", friendRouter)
 
 
 
