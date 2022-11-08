@@ -10,6 +10,8 @@ const authRouter = require('./routes/auth.route')
 const profileRouter = require('./routes/profile.route')
 const friendRouter = require('./routes/friend.route')
 
+const getFriendRequests = require("./models/user.model").getFriendRequests;
+
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'public','assets')));
@@ -31,6 +33,20 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 app.set('views', 'views') // default
+
+app.use((req,res, next) => {
+    if(req.session.userId) {
+        getFriendRequests(req.session.userId).then(requests => {
+            req.friendRequests = requests
+            next()
+        }).catch(err => {
+            res.redirect('/error')
+        })
+    }else {
+        next()
+    }
+})
+
 
 app.use("/", authRouter);
 app.use("/profile", profileRouter)

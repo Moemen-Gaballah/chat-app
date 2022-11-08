@@ -24,6 +24,19 @@ exports.accept = (req, res, next) => {
     });
 };
 
-exports.reject = (req, res, next) => {};
+exports.reject = (req, res, next) => {
+    userModel.rejectFriendRequest(req.body).then(() => {
+        res.redirect('/profile/' + req.body.friendId)
+    }).catch(err => {
+        console.log(err)
+        res.redirect("/error")
+    });
+};
 
-exports.delete = (req, res, next) => {};
+exports.delete = (req, res, next) => {
+    userModel.deleteFriendRequest(req.body).then(() => {
+        res.redirect('/profile/' + req.body.friendId)
+    }).catch(err => {
+        res.redirect("/error")
+    });
+};

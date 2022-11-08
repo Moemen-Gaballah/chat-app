@@ -17,6 +17,7 @@ exports.getProfile = (req, res, next) => {
                 pageTitle: data.username,
                 isUser: true,
                 myId: req.session.userId,
+                friendRequests: req.friendRequests,
                 myName: req.session.name,
                 myImage: req.session.image,
                 friendId: data._id,

@@ -33,6 +33,20 @@
 
             </ul>
             <% if(isUser) { %>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                        Friend Requests
+                    </button>
+                    <div class="dropdown-menu">
+                        <% for (let request of friendRequests) { %>
+                            <a class="dropdown-item" href="<%= request.id %>">
+                                <%= request.name %>
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+
                 <form action="/logout" method="post">
                     <input type="submit" value="logout" class="btn btn-danger">
                 </form>
