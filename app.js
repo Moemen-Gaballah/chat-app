@@ -12,11 +12,25 @@ const friendRouter = require('./routes/friend.route')
 
 const getFriendRequests = require("./models/user.model").getFriendRequests;
 
+
+
 const app = express();
+const server = require("http").createServer(app);
+const socketIo = require("socket.io")
+const io = socketIo(server);
+
 
 app.use(express.static(path.join(__dirname, 'public','assets')));
 app.use(express.static(path.join(__dirname, 'public','images')));
-app.use(flash())
+app.use(flash());
+
+require("./sockets/friend.socket")(io);
+
+io.on("connection", socket => {
+    require("./sockets/init.socket")(socket);
+});
+
+
 
 const STORE = new SessionStore({
     uri: 'mongodb://localhost:27017/chat-app',
@@ -57,6 +71,9 @@ app.use("/friend", friendRouter)
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log('Server listen on port 3000');
-});
+// app.listen(port, () => {
+//     console.log('Server listen on port 3000');
+// });
+
+server.listen(3000, () => console.log("server listen on port 3000"));
+

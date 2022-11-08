@@ -44,10 +44,12 @@ exports.getUserData = id => {
 exports.sendFriendRequest = async (data) => {
     try {
         await mongoose.connect(DB_URL);
-        await User.updateOne({_id: data.friendId},
+        await User.updateOne(
+            {_id: data.friendId},
             { $push: {friendRequests: {name: data.myName, id: data.myId}}})
 
-        await User.updateOne({_id: data.myId},
+        await User.updateOne(
+            {_id: data.myId},
             { $push: {sendRequests: {name: data.friendName, id: data.friendId}}})
 
         mongoose.disconnect();
